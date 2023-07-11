@@ -7,7 +7,12 @@ const sequelize=require('./util/database');
 
 const app= express();
 
-app.use(cors());
+app.use(
+    cors({
+    origin: "http://127.0.0.1:5500", // " * " give access to all
+    methods:["GET","POST"] ,  // allow predefined methods only without it then allows all method 
+    credentials:true,     })
+);
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
 sequelize
