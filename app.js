@@ -10,7 +10,7 @@ const app= express();
 app.use(
     cors({
     origin: "http://127.0.0.1:5500", // " * " give access to all
-    methods:["GET","POST"] ,  // allow predefined methods only without it then allows all method 
+    methods:["GET","POST"] ,  // allow predefined methods only without it then allows all methods
     credentials:true,     })
 );
 app.use(bodyParser.json());
