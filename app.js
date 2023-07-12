@@ -10,12 +10,12 @@ const app= express();
 app.use(
     cors({
     origin: "http://127.0.0.1:5500", // " * " give access to all
-    methods:["GET","POST"] ,  // allow predefined methods only without it then allows all methods
-    credentials:true,     })
+    methods:["GET","POST"]  // allow predefined methods only without it then allows all methods
+    })
 );
 app.use(bodyParser.json());
 app.use('/user', userRoutes);
 sequelize
 .sync()
-.then(app.listen(7000,()=>console.log("server connected")))
+.then(app.listen(3000,()=>console.log("server connected")))
 .catch(err=>console.log(err));
