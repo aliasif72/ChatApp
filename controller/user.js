@@ -1,4 +1,5 @@
 const User = require('../model/user');
+const Msg=require('../model/msg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -45,3 +46,19 @@ exports.login = async (req, res, next) => {
       })
       .catch(err => console.log(err));
 }
+
+//SAVE MESSAGE
+exports.sendMsg=async (req,res,next)=>
+{
+   const {message} = req.body;
+ try
+ {
+ const result=await req.user.createMsg({ message })
+ res.status(200).json(result);
+ }
+ catch(error)
+{
+    console.log(err);
+ }
+ }
+ 

@@ -7,7 +7,6 @@
   <title>Chat App</title>
   <link rel="stylesheet" href="chat.css">
 </head>
-
 <body>
   <div class="form-modal">
     <div class="header">
@@ -21,13 +20,14 @@
       <p>Vaibhav: Hello</p>
     </fieldset>
     <div>
-      <form>
+      <form onsubmit="saveMsg(event)">
         <input type="text" id="msg">
-        <button type="button">Send</button>
+        <button type="submit">Send</button>
       </form>
     </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  <script src="new.js"></script>
 </body>
 </body>
-
 </html>
