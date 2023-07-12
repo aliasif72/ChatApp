@@ -7,6 +7,7 @@
   <title>Chat App</title>
   <link rel="stylesheet" href="chat.css">
 </head>
+
 <body>
   <div class="form-modal">
     <div class="header">
@@ -27,7 +28,31 @@
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+  <script>
+    //REFRESH WINDOW
+    window.addEventListener("DOMContentLoaded", async function load() {
+      const token = localStorage.getItem('token');
+      try {
+        let resp = await axios.get(`http://localhost:3000/user/login/getMsg`, { headers: { "authorization": token } });
+        console.log(resp);
+        for (let i = 0; i < resp.data.length; i++) {
+          showMsg(resp.data[i]);
+        }
+      }
+      catch (err) {
+        console.log(err);
+      }
+    });
+
+    //DISPLAY MESSAGES
+    function showMsg(obj) {
+      const leaf = `<p>${obj.user.name} : ${obj.message}</p>`
+      const parentNode = document.getElementById('msgs');
+      parentNode.innerHTML = parentNode.innerHTML + leaf;
+    }
+  </script>
   <script src="new.js"></script>
 </body>
 </body>
+
 </html>

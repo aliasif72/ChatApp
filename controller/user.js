@@ -1,5 +1,5 @@
 const User = require('../model/user');
-const Msg=require('../model/msg');
+const Msg = require('../model/msg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -35,11 +35,11 @@ exports.login = async (req, res, next) => {
       .then(exist => {
          if (exist[0] == undefined)//or(exist.length<1) so, yaha pe exist=[], exist[0]=undefined dega console krne pe
          {
-            return res.status(404).json({message: "User doesn't exist" });
+            return res.status(404).json({ message: "User doesn't exist" });
          }
          bcrypt.compare(password, exist[0].password, (err, result) => {
             if (result) {
-                return res.status(201).json({ message: "Login success", token: generateToken(exist[0].id, exist[0].name, exist[0].number) });
+               return res.status(201).json({ message: "Login success", token: generateToken(exist[0].id, exist[0].name, exist[0].number) });
             }
             return res.status(401).json({ message: "User not authorized" });
          });
@@ -48,17 +48,30 @@ exports.login = async (req, res, next) => {
 }
 
 //SAVE MESSAGE
-exports.sendMsg=async (req,res,next)=>
-{
-   const {message} = req.body;
- try
- {
- const result=await req.user.createMsg({ message })
- res.status(200).json(result);
- }
- catch(error)
-{
-    console.log(err);
- }
- }
- 
+exports.sendMsg = async (req, res, next) => {
+   const { message } = req.body;
+   try {
+      const result = await req.user.createMsg({ message })
+      res.status(200).json(result);
+   }
+   catch (error) {
+      console.log(err);
+   }
+}
+
+
+//GET USER'S MESSAGE
+exports.getMsg = async (req, res, next) => {
+   try {
+      let result = await req.user.getMsgs({
+         include:{
+            model:User,
+         attributes:['name']
+      }})
+      res.status(200).json(result);
+   }
+   catch (err) {
+      console.log(err);
+   }
+}
+
