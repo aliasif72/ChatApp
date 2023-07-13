@@ -63,7 +63,7 @@ exports.sendMsg = async (req, res, next) => {
 //GET USER'S MESSAGE
 exports.getMsg = async (req, res, next) => {
    try {
-      let result = await req.user.getMsgs({
+      let result = await Msg.findAll({
          include:{
             model:User,
          attributes:['name']
