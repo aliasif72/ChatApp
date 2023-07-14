@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+  <link rel="stylesheet" href="chat.css">
+</head>
+
+<body>
+  <div class="form-modal">
+    <div class="header">
+      <header>
+        <p class="chat">Chat App</p>
+      </header>
+    </div>
+    <button type="button" class="btn" onclick="oldMsg(event)">Old Message</button>
+    <button type="button" onclick="nextMsg(event)">New Message</button>
+    <fieldset id="msgs">
+      <p class="join">Vaibhav joined</p>
+      <p>Vaibhav: Hello!!</p>
+      <p>Vaibhav: Hello</p>
+    </fieldset>
+    <div>
+      <form onsubmit="saveMsg(event)">
+        <input type="text" id="msg">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+   <script>
+    const parentNode = document.getElementById('msgs');
+            
+    //REFRESH WINDOW OR REFRESH DATA EVERY SECOND
+    window.addEventListener("DOMContentLoaded", async function lsLoad() {
+       if(!localStorage.getItem('chat'))
+      {
+        return latestMsg();
+        }
+      chatMsg = JSON.parse(localStorage.getItem('chat'));
+      parentNode.innerHTML= ' ';
+      for (let i = 0; i < chatMsg.length; i++) {
+        await showMsg(chatMsg[i]);
+        parentNode.scrollTop=parentNode.scrollHeight;
+      }
+      })
+  </script>
+  <script src="new.js"></script>
+</body>
+</html>

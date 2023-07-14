@@ -22,4 +22,3 @@ sequelize
 
     .then(app.listen(3000, () => console.log("server connected")))
     .catch(err => console.log(err));
-
