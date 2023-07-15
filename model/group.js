@@ -1,19 +1,16 @@
 const Sequelize=require('sequelize');
 const sequelize=require('../util/database');
-const Msg = sequelize.define(('msg'), {
+const Grp = sequelize.define(('grp'), {
     id:{
         type:Sequelize.INTEGER,
         autoIncrement:true,
         allowNull:false,
         primaryKey:true
     },
-    message:Sequelize.STRING,
-    name:Sequelize.STRING,
-           }, 
+    grpName:Sequelize.STRING,
+        }, 
            {
-            timestamps: true,
-            createdAt: "Send At",
-            updatedAt: false,
+            timestamps:false
         }
         );
-module.exports=Msg;
+module.exports=Grp;
