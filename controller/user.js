@@ -77,13 +77,17 @@ exports.getMembers = async (req, res, next) => {
       delete ele.user
       ele.name = naam
     })
-    const isAdmin = await Usergroup.findOne({
+    let isAdmin = await Usergroup.findOne({
       where: {
         userId: +req.user.id,
         grpId: +gid,
         isAdmin: true
       }
     })
+    if(!isAdmin)
+    {
+      isAdmin={isAdmin:false};
+    }
 
     const chats = await Msg.findAll({
       where: { grpId: +gid },
