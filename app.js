@@ -27,6 +27,10 @@ Msg.belongsTo(User);
 
 User.belongsToMany(Grp, { through: Usergroup });
 Grp.belongsToMany(User, { through: Usergroup });
+User.hasMany(Usergroup,{constraints: true , onDelete:'Cascade'})
+Usergroup.belongsTo(User);
+Grp.hasMany(Usergroup,{constraints: true , onDelete:'Cascade'})
+Usergroup.belongsTo(Grp);
 
 Grp.hasMany(Msg, {constraints: true , onDelete:'Cascade'});
 Msg.belongsTo(Grp);

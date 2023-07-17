@@ -7,14 +7,21 @@ exports.sendMsg = async (req, res, next) => {
    try{
     const { message } = req.body;
     const {name}=req.user;
+    console.log('>>>>>>>>>>>>>>>>'+req.body);
+    console.log('>>>>>>>>>>>'+req.body.gid);
     if(message.length===0 || message===''){
        return res.status(500).json({message:"SomeThing is Missing"})
     }
-       const result = await req.user.createMsg({ message, name })
-       res.status(200).json(result);
+    if(req.body.gid===undefined)
+    {
+      const result = await req.user.createMsg({ message, name })
+      return res.status(200).json(result);
+    }
+      const result = await req.user.createMsg({ message, name, grpId : +req.body.gid })
+      res.status(200).json(result);
     }
     catch (error) {
-       console.log(err);
+       console.log(error);
     }
  }
  
@@ -23,6 +30,7 @@ exports.sendMsg = async (req, res, next) => {
  exports.getMsg = async (req, res, next) => {
        let id=+req.query.msgid;
        console.log(req.query);
+       const{ gid }=req.query.gid;
        if(req.query.what==='old')
        {
        id = (+req.query.msgid - 10);
@@ -33,9 +41,10 @@ exports.sendMsg = async (req, res, next) => {
        console.log(id+"74");
        try {
           const result = await Msg.findAll({
-          offset: id,                                //+/NUMBER for integer type
+            where:{userId : req.user.userId,grpId:gid || 0},
+          offset: id,                                       //+/NUMBER for integer type
           limit: 10,
-          attributes: ['id', 'message', 'name'],
+          attributes: ['message', 'name','grpId'],
        })
        if (result) {
           return res.status(200).json(result);
