@@ -8,13 +8,17 @@
     <link rel="stylesheet" href="new.css">
 </head>
 
+<!-- BODY -->
+
 <body>
+    <!-- FORM -->
     <div class="form-modal">
         <div class="form-toggle">
             <button id="login-toggle" onclick="toggleLogin()">log in</button>
             <button id="signup-toggle" onclick="toggleSignup()">sign up</button>
         </div>
 
+        <!-- LOGIN FORM -->
         <div id="login-form">
             <form onsubmit="logUp(event)">
                 <input type="text" id="chemail" placeholder="Enter email" required>
@@ -22,10 +26,9 @@
                 <button type="submit" class="btn login">login</button>
                 <p><a href="javascript:void(0)">Forgot Password</a></p>
                 <hr />
-
             </form>
         </div>
-
+            <!-- SIGNUP FORM -->
         <div id="signup-form">
             <form onsubmit="signUp(event)">
                 <input type="text" id="name" placeholder="Username" required>
@@ -39,6 +42,9 @@
             </form>
         </div>
     </div>
+
+    <!-- SCRIPTS -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
     <script>
         function toggleSignup() {
@@ -62,5 +68,4 @@
     </script>
     <script src="new.js"></script>
 </body>
-
 </html>
