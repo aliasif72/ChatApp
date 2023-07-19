@@ -1,4 +1,5 @@
 const Msg = require('../model/msg')
+const Op= require('sequelize');
 
 //SEND MESSAGE
 exports.sendMsg = async (req, res, next) => {
@@ -73,6 +74,40 @@ exports.latestMsg = async (req, res, next) => {
   }
 }
 
+//COPY & DELETE 1 DAY OLD
+exports.copydelete = async (req, res, next) => {
+  try {
+    const result = await Msg.findAll({
+         where:{
+          Send_At:{[Op.lt]: new Date()},
+              },
+            });
+            console.log(result);
+       if(result.length>0)
+       {
+        result.forEach(ele=>{
+          Archived.create({
+            name:ele.name,
+            message:ele.message,
+            "Send At":ele.Send_At,
+            userId:ele.userId,
+            grpId:ele.grpId
+          })
+        })
+        await Msg.destroy({
+          where:{
+            Send_At:{
+              [Op.lt]: new Date()
+          }
+       }})
+      return res.status(201).json(result);
+     } 
+     res.status(404).json("FAILED RESULT");
+    }
+      catch (err) {
+      console.log(err)
+        }
+      }
 
 //UPLOAD FILE
 function uploadToS3(file) {
@@ -100,7 +135,6 @@ function uploadToS3(file) {
     })
   })
 
-
 }
 exports.uploadFile = async (req, res, next) => {
   try {
@@ -108,7 +142,7 @@ exports.uploadFile = async (req, res, next) => {
 
     console.log(">>>>>>>", req.files.file);
     const file = req.files.file;
-    const fileName = file.name;
+    console.log(req.files);
     const fileURL = await uploadToS3(file);
     console.log(fileURL);
     const user = await req.user.createMsg({ name: req.user.username, message: fileURL, grpId: groupId });

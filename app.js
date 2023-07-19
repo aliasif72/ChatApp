@@ -7,6 +7,8 @@ const path = require('path')
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const fileupload=require('express-fileupload');
+const job=require('./node-cron/nodecron');
+
 app.use(fileupload());
 
 //ROUTES
@@ -37,6 +39,11 @@ io.on('connection', socket => {
         }
     })
 })
+
+//NODE CRON
+
+job.start();
+
 
 //MIDDLEWARES
 app.use(

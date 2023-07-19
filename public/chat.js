@@ -376,17 +376,13 @@ async function uploadFile(event){
       console.log(formData);
       const groupId=JSON.parse(localStorage.getItem('groupid')); 
       const token=localStorage.getItem('token');
-      const response=await axios.post(`http://localhost:3000/verifiedUser/sendfile/${groupId}`,formData,{headers:{"Authorization":token,'Content-Type':'multipart/form-data'}});
-          console.log(response);
-          showmessage(response.data.message.name,response.data.message.message)
-          uploadedfile.value=null;
+      const result=await axios.post(`http://localhost:3000/verifiedUser/sendfile/${groupId}`,formData,{headers:{"Authorization":token,'Content-Type':'multipart/form-data'}});
+          console.log(result);
+          showmessage(result.data.message.name,result.data.message.message);
+          file.value=null;
      }
   }catch(err){
       console.log(err);
-      msg.innerHTML="";
-    msg.innerHTML=msg.innerHTML+`<div>${err.response.data.message}</div>`;
-    setTimeout(()=>{
-      msg.innerHTML="";
-  },3000)
-  }
+     alert(err.response.data.message)
  }
+}
