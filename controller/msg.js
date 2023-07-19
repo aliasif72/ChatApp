@@ -10,7 +10,7 @@ exports.sendMsg = async (req, res, next) => {
     }
     if (req.body.gid === 'undefined') {
       const result = await req.user.createMsg({ message, name })
-     return res.status(200).json(result)
+      return res.status(200).json(result)
     }
     const result = await req.user.createMsg({
       message,
@@ -19,7 +19,7 @@ exports.sendMsg = async (req, res, next) => {
     })
     res.status(200).json(result)
   }
-   catch (error) {
+  catch (error) {
     console.log(error)
   }
 }
@@ -70,5 +70,53 @@ exports.latestMsg = async (req, res, next) => {
     res.status(404).json({ success: 'false' })
   } catch (err) {
     console.log(err)
+  }
+}
+
+
+//UPLOAD FILE
+function uploadToS3(file) {
+
+  let s3bucket = new AWS.S3({
+    accessKeyId: process.env.AWS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+  })
+  var params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: file.name,
+    Body: file.data,
+    ContentType: file.mimetype,
+    ACL: 'public-read'
+  }
+  return new Promise((resolve, reject) => {
+    s3bucket.upload(params, (err, s3response) => {
+      if (err) {
+        console.log("SOMETHING WENT WRONG", err)
+        reject(err);
+      }
+      else {
+        resolve(s3response.Location)
+      }
+    })
+  })
+
+
+}
+exports.uploadFile = async (req, res, next) => {
+  try {
+    const groupId = req.params.groupId;
+
+    console.log(">>>>>>>", req.files.file);
+    const file = req.files.file;
+    const fileName = file.name;
+    const fileURL = await uploadToS3(file);
+    console.log(fileURL);
+    const user = await req.user.createMsg({ name: req.user.username, message: fileURL, grpId: groupId });
+    res.status(200).json({ message: user, success: true })
+  }
+
+  catch (err) {
+    console.log(">>>>>>>>>>>>>>>", err);
+    res.status(500).json({ message: "Something went Wrong", error: err, success: false })
   }
 }

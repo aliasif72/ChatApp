@@ -61,17 +61,21 @@
       </div>
     </div>
     <button type="button" onclick="oldMsg(event)">Old Message</button>
-    <button type="button" onclick="nextMsg(event)">New Message</button>
-    <div>
+    <button type="button" onclick="nextMsg(event)">New Message</button
+      
+    
 
       <!-- CHAT SCREEN -->
-      <fieldset id="msgs">
+      <div> 
+         <fieldset id="msgs">
         <p class="join">Vaibhav joined</p>
         <p class="chatbox">Vaibhav: Hello!!</p>
         <p class="chatbox">Vaibhav: Whats up??</p>
       </fieldset>
       <div>
         <form onsubmit="saveMsg(event)">
+          <input type="file" id="file">
+           <button class="btn" type="button" onclick="uploadFile(event)">Upload</button>
           <button type="submit" class="btn">Send</button>
           <input type="text" class="input" id="msg">
         </form>
@@ -118,6 +122,8 @@
     const btnhiddenNode = document.getElementById('btnhidden');
 
     const closeGrp = document.getElementById('closeGrp');
+
+    const file=document.getElementById('file');
 
 
     //REFRESH WINDOW 
