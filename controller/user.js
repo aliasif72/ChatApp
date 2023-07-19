@@ -49,7 +49,7 @@ exports.login = async (req, res, next) => {
             token: generateToken(exist[0].id, exist[0].name, exist[0].number)
           })
         }
-        return res.status(401).json({ message: 'User not authorized' })
+        return res.status(401).json({ message: 'User not authorized', name:exist[0].name})
       })
     })
     .catch(err => console.log(err))
@@ -71,7 +71,7 @@ exports.getMembers = async (req, res, next) => {
       raw: true,
       nest: true
     })
-    let naam = ''
+    let naam = '';
     users.forEach(ele => {
       naam = ele.user.name
       delete ele.user
