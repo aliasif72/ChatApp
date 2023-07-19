@@ -8,4 +8,4 @@ const job = nodeCron.schedule("59 59 02 * * *", async function copydelete(){
     timezone: "Asia/Kolkata"
 });
 
-export {job};
+module.exports = job;
