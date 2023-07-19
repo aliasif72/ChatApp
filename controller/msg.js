@@ -79,7 +79,7 @@ exports.copydelete = async (req, res, next) => {
   try {
     const result = await Msg.findAll({
          where:{
-          Send_At:{[Op.lt]: new Date()},
+          sendAt:{[Op.lt]: new Date()},
               },
             });
             console.log(result);
@@ -89,21 +89,21 @@ exports.copydelete = async (req, res, next) => {
           Archived.create({
             name:ele.name,
             message:ele.message,
-            "Send At":ele.Send_At,
+            sendAt:ele.Send_At,
             userId:ele.userId,
             grpId:ele.grpId
           })
         })
         await Msg.destroy({
           where:{
-            Send_At:{
+            sendAt:{
               [Op.lt]: new Date()
           }
        }})
       return res.status(201).json(result);
      } 
      res.status(404).json("FAILED RESULT");
-    }
+  }
       catch (err) {
       console.log(err)
         }

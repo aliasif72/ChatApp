@@ -18,6 +18,7 @@ const grpRoutes = require('./route/group')
 
 //MODELS
 const sequelize = require('./util/database')
+const Archived=require('./model/archived');
 const User = require('./model/user')
 const Msg = require('./model/msg')
 const Grp = require('./model/group')
@@ -82,6 +83,6 @@ Msg.belongsTo(Grp)
 
 //SYNC
 sequelize
-    .sync()
+    .sync({force:true})
     .then(server.listen(3000, () => console.log('server connected')))
     .catch(err => console.log(err))
