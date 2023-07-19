@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
+const Op= require('sequelize');
 const Usergroup = sequelize.define(('usergroup'), {
     id: {
         type: Sequelize.INTEGER,

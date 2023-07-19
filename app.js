@@ -32,13 +32,14 @@ io.on('connection', socket => {
         console.log(io.sockets.adapter.rooms);
         cb(`${username} joined`)
     })
-    socket.on('send-message', (gid, usermsg) => {
-        if (gid == 'undefined') {
-            socket.broadcast.emit('receive-message', usermsg)
-        } else {
-            socket.to(gid).emit('receive-message', usermsg)
-        }
+    socket.on('leave-room', leaveId => {
+        socket.leave(leaveId);
+        console.log(io.sockets.adapter.rooms);
     })
+    socket.on('send-message', (gid, usermsg) => {
+       socket.to(gid).emit('receive-message', usermsg)
+        }
+    )
 })
 
 //NODE CRON
@@ -83,6 +84,6 @@ Msg.belongsTo(Grp)
 
 //SYNC
 sequelize
-    .sync({force:true})
+    .sync()
     .then(server.listen(3000, () => console.log('server connected')))
     .catch(err => console.log(err))

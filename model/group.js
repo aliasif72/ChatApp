@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const Op= require('sequelize');
 const sequelize = require('../util/database')
 const Grp = sequelize.define(
     'grp',

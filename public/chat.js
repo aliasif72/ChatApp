@@ -1,5 +1,4 @@
-const username = localStorage.getItem('username')
-//let message='wqertyt';
+let username = localStorage.getItem('username');
 
 //SOCKET
 
@@ -174,16 +173,20 @@ async function getMembers(grpid) {
     localStorage.setItem('members', JSON.stringify(resp.data.users))
     localStorage.setItem('chat', JSON.stringify(resp.data.chats))
     localStorage.setItem('isAdmin', JSON.stringify(resp.data.admin.isAdmin));
-    localStorage.setItem('groupid', grpid);
     memberNode.innerHTML = '';
     parentNode.innerHTML = '';
     for (let i = 0; i < resp.data.chats.length; i++) {
       showMsg(resp.data.chats[i])
     }
+    const leaveId=localStorage.getItem('groupid');
+    localStorage.setItem('groupid',grpid);
+    socket.emit('leave-room', leaveId);
+    console.log(leaveId);
+    console.log(grpid);
     socket.emit('join-room', grpid, username, welcome => {
-      displayJoin(welcome);
-    })
-    if (resp.data.admin.isAdmin === true) {
+      displayJoin(welcome)
+    });
+        if (resp.data.admin.isAdmin === true) {
       for (let i = 0; i < resp.data.users.length; i++) {
         showMember(resp.data.users[i], 'membtnmini', grpid)
       }
@@ -204,17 +207,22 @@ async function showUserOnly() {
     console.log(resp)
     localStorage.setItem('members', JSON.stringify(resp.data.users))
     localStorage.setItem('chat', JSON.stringify(resp.data.chats))
-    localStorage.setItem('groupid', JSON.stringify(undefined))
     localStorage.setItem('isAdmin', JSON.stringify(undefined))
+    const leaveId=localStorage.getItem('groupid');
+    localStorage.setItem('groupid', 0 );
+    const joinId=localStorage.getItem('groupid');
+    console.log(leaveId);
     memberNode.innerHTML = ''
     parentNode.innerHTML = ''
     for (let i = 0; i < resp.data.chats.length; i++) {
       showMsg(resp.data.chats[i])
     }
-    socket.emit('join-room', '0' , username, welcome => {
-      displayJoin(welcome);
+    socket.emit('leave-room', leaveId);
+    console.log(joinId);
+    socket.emit('join-room', joinId, username, welcome => {
+    displayJoin(welcome);
     })
-    resp.data.users.forEach(ele => {
+      resp.data.users.forEach(ele => {
       const tile = `<div class="membtn" ><p style="margin-left: 1.8em;margin-top:1.5em;">${ele.name}</p>
     </div>`
       memberNode.innerHTML = memberNode.innerHTML + tile
