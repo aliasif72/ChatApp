@@ -82,7 +82,7 @@ async function nextMsg(event) {
       msgid = getmsgId[getmsgId.length - 1].id
     }
     let resp = await axios.get(
-      `http://localhost:3000/verifiedUser/getMsg?${gid}&what=next&msgid=${msgid}`,
+      `http://localhost:3000/verifiedUser/getMsg?gid=${gid}&what=next&msgid=${msgid}`,
       { headers: { authorization: token } }
     )
     console.log(resp)

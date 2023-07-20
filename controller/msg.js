@@ -29,7 +29,12 @@ exports.sendMsg = async (req, res, next) => {
 exports.getMsg = async (req, res, next) => {
   let id = +req.query.msgid
   console.log(req.query)
-  const { gid } = req.query.gid
+  let { gid } = req.query.gid
+  if(gid == 0)
+  {
+    gid=null;
+  }
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>'+gid)
   if (req.query.what === 'old') {
     id = +req.query.msgid - 10
     if (id < 10) {
@@ -38,8 +43,8 @@ exports.getMsg = async (req, res, next) => {
   }
   console.log(id + '74')
   try {
-    const result = await Msg.findAll({
-      where: { userId: req.user.userId, grpId: gid || 0 },
+      const result = await Msg.findAll({
+      where: { userId: req.user.userId, grpId: gid },
       offset: id, //+/NUMBER for integer type
       limit: 10,
       attributes: ['message', 'name', 'grpId']
@@ -61,6 +66,9 @@ exports.latestMsg = async (req, res, next) => {
       count = 10
     }
     const result = await Msg.findAll({
+      where:{
+        grpId : null
+      },
       offset: Number(count - 10),
       limit: 10,
       attributes: ['id', 'message', 'name']
@@ -145,6 +153,11 @@ exports.uploadFile = async (req, res, next) => {
     console.log(req.files);
     const fileURL = await uploadToS3(file);
     console.log(fileURL);
+    if(req.params.groupId== 0)
+    {
+      const user = await req.user.createMsg({ name: req.user.username, message: fileURL });
+      return  res.status(200).json({ message: user, success: true })  
+      }
     const user = await req.user.createMsg({ name: req.user.username, message: fileURL, grpId: groupId });
     res.status(200).json({ message: user, success: true })
   }

@@ -49,6 +49,7 @@ exports.login = async (req, res, next) => {
             token: generateToken(exist[0].id, exist[0].name, exist[0].number)
           })
         }
+        console.log(exist[0].name)
         return res.status(401).json({ message: 'User not authorized', name:exist[0].name})
       })
     })
@@ -59,6 +60,7 @@ exports.login = async (req, res, next) => {
 exports.getMembers = async (req, res, next) => {
   try {
     const { gid } = req.query
+    console.log(gid);
     const users = await Usergroup.findAll({
       where: {
         grpId: +gid
