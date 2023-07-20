@@ -9,7 +9,7 @@ exports.sendMsg = async (req, res, next) => {
     if (message.length === 0 || message === '') {
       return res.status(500).json({ message: 'SomeThing is Missing' })
     }
-    if (req.body.gid === 'undefined') {
+    if (req.body.gid == 0) {
       const result = await req.user.createMsg({ message, name })
       return res.status(200).json(result)
     }
